@@ -6,6 +6,8 @@ import { Link } from 'react-router-dom'
 import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service'
 import { loadTask, addTaskMsg } from '../store/actions/task.actions'
 
+import { TaskEdit } from '../cmps/TaskEdit.jsx'
+
 export function TaskDetails() {
   const { taskId } = useParams()
   const task = useSelector((storeState) => storeState.taskModule.task)
@@ -24,23 +26,32 @@ export function TaskDetails() {
   }
 
   return (
-    <section className='task-details'>
+    <section className='task-details-page'>
       <Link to='/task'>Back to list</Link>
-      <h1>Task Details</h1>
+      <h1>What To Do</h1>
       {task && (
-        <div>
-          <h3>{task.vendor}</h3>
-          <h4>${task.price}</h4>
-          <pre> {JSON.stringify(task, null, 2)} </pre>
+        <div
+          className={
+            task.status === 'Completed'
+              ? 'task-details completed'
+              : task.priority === 'Critical' || 'High'
+              ? 'task-details priority'
+              : 'task-details'
+          }
+        >
+          <h2>{task.title}</h2>
+          <h4>{task.description}</h4>
+          <h4>{task.dueDate}</h4>
         </div>
       )}
-      <button
+      {/* <button
         onClick={() => {
           onAddTaskMsg(task._id)
         }}
       >
         Add task msg
-      </button>
+      </button> */}
+      <TaskEdit task={task} />
     </section>
   )
 }

@@ -32,9 +32,9 @@ export function TaskList({ tasks, onRemoveTask, onUpdateTask, setTasks }) {
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-      <Droppable droppableId='tasksList'>
+      <Droppable droppableId='tasksList' direction='horizontal'>
         {(provided) => (
-          <ul
+          <div
             className='list'
             {...provided.droppableProps}
             ref={provided.innerRef}
@@ -42,10 +42,11 @@ export function TaskList({ tasks, onRemoveTask, onUpdateTask, setTasks }) {
             {tasks.map((task, index) => (
               <Draggable key={task.id} draggableId={task.id} index={index}>
                 {(provided) => (
-                  <li
+                  <div
                     ref={provided.innerRef}
                     {...provided.draggableProps}
                     {...provided.dragHandleProps}
+                    className='task-container'
                   >
                     <TaskPreview task={task} />
                     {shouldShowActionBtns(task) && (
@@ -54,12 +55,12 @@ export function TaskList({ tasks, onRemoveTask, onUpdateTask, setTasks }) {
                         <button onClick={() => onRemoveTask(task.id)}>x</button>
                       </div>
                     )}
-                  </li>
+                  </div>
                 )}
               </Draggable>
             ))}
             {provided.placeholder}
-          </ul>
+          </div>
         )}
       </Droppable>
     </DragDropContext>

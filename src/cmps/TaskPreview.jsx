@@ -4,7 +4,7 @@ export function TaskPreview({ task }) {
   return (
     <article className='preview'>
       <header>
-        <Link to={`/task/${task._id}`}>{task.title}</Link>
+        <Link to={`/task/${task.id}`}>{task.title}</Link>
       </header>
 
       {task.owner && (

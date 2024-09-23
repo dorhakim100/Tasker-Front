@@ -3,7 +3,7 @@
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 0.5em;
 
-  li {
+  .task-container {
     display: grid;
     grid-template-columns: max-content auto;
     padding: 0.5em;

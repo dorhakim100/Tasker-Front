@@ -36,8 +36,10 @@ async function query(filterBy = { txt: '' }) {
   if (status) {
     tasks.filter((task) => task.status === status)
   }
-  if (priority) {
-    tasks.filter((task) => task.priority === priority)
+  if (priority !== 'All') {
+    console.log(priority)
+    tasks = tasks.filter((task) => task.priority === priority)
+    console.log(tasks)
   }
 
   return tasks
@@ -59,6 +61,7 @@ async function save(task) {
       id: task.id,
       title: task.title,
       dueDate: task.dueDate,
+      description: task.description,
       status: task.status,
       priority: task.priority,
       tags: task.tags,
@@ -68,6 +71,7 @@ async function save(task) {
     const taskToSave = {
       title: task.title,
       dueDate: task.dueDate,
+      description: task.description,
       status: task.status,
       priority: task.priority,
       tags: task.tags,

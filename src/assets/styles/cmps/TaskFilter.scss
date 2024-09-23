@@ -3,8 +3,10 @@
   grid-template-columns: 1fr 5em 5em auto;
   align-items: center;
   gap: 0 0.5em;
+  background-color: $black-card-background;
+  margin: 0em 0.8em 0em 0.8em;
+  border-radius: 5px;
 
-  background-color: $clr4;
   padding: 0.5em;
 
   h3 {
@@ -59,7 +61,7 @@
     }
 
     &:has(:checked) span {
-      background-color: $clr3;
+      background-color: $blue-primary;
       color: $gray1;
     }
   }

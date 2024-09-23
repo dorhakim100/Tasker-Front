@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react'
+import { Button } from '@mui/material'
+import { taskService } from '../services/task/task.service'
 
 export function TaskFilter({ filterBy, setFilterBy }) {
   const [filterToEdit, setFilterToEdit] = useState(structuredClone(filterBy))
@@ -12,21 +14,25 @@ export function TaskFilter({ filterBy, setFilterBy }) {
     const field = ev.target.name
     let value
 
+    console.log(type)
+
     switch (type) {
       case 'text':
       case 'radio':
         value = field === 'sortDir' ? +ev.target.value : ev.target.value
         if (!filterToEdit.sortDir) filterToEdit.sortDir = 1
         break
-      case 'number':
-        value = +ev.target.value || ''
+      case 'select-one':
+        console.log(field)
+        value = ev.target.value
+        console.log(value)
         break
     }
     setFilterToEdit({ ...filterToEdit, [field]: value })
   }
 
   function clearFilter() {
-    setFilterToEdit({ ...filterToEdit, txt: '', minSpeed: '', maxPrice: '' })
+    setFilterToEdit(taskService.getDefaultFilter())
   }
 
   function clearSort() {
@@ -44,37 +50,40 @@ export function TaskFilter({ filterBy, setFilterBy }) {
         onChange={handleChange}
         required
       />
-      <input
-        type='number'
-        min='0'
-        name='minSpeed'
-        value={filterToEdit.minSpeed}
-        placeholder='min. speed'
+      <select
+        id='priority'
+        name='priority'
+        value={filterToEdit.priority}
         onChange={handleChange}
-        required
-      />
-      <button className='btn-clear' onClick={clearFilter}>
+      >
+        <option value='All'>All</option>
+        <option value='Low'>Low</option>
+        <option value='Medium'>Medium</option>
+        <option value='High'>High</option>
+        <option value='Critical'>Critical</option>
+      </select>
+      <Button className='btn-clear' variant='contained' onClick={clearFilter}>
         Clear
-      </button>
+      </Button>
       <h3>Sort:</h3>
       <div className='sort-field'>
         <label>
-          <span>Speed</span>
+          <span>Priority</span>
           <input
             type='radio'
             name='sortField'
-            value='speed'
-            checked={filterToEdit.sortField === 'speed'}
+            value='priority'
+            checked={filterToEdit.sortField === 'priority'}
             onChange={handleChange}
           />
         </label>
         <label>
-          <span>Vendor</span>
+          <span>Title</span>
           <input
             type='radio'
             name='sortField'
-            value='vendor'
-            checked={filterToEdit.sortField === 'vendor'}
+            value='title'
+            checked={filterToEdit.sortField === 'title'}
             onChange={handleChange}
           />
         </label>
@@ -111,9 +120,9 @@ export function TaskFilter({ filterBy, setFilterBy }) {
           />
         </label>
       </div>
-      <button className='btn-clear' onClick={clearSort}>
+      <Button className='btn-clear' variant='contained' onClick={clearSort}>
         Clear
-      </button>
+      </Button>
     </section>
   )
 }

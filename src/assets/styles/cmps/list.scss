@@ -2,6 +2,7 @@
     --min-column-size: 220px;
 
     display: flex;
+    flex-direction: row;
     overflow-x: auto;
     height: calc(100vh - 360px);
     background-color: $blue-primary;
@@ -11,7 +12,8 @@
     align-items: start;
     justify-items: center;
 
-    li {
+
+    .task-container {
         display: grid;
         grid-template-columns: max-content auto;
         padding: .5em;
