@@ -47,10 +47,11 @@ export async function removeTask(taskId) {
   }
 }
 
-export async function addTask(task) {
+export async function saveTask(task) {
   try {
+    const type = task.id ? UPDATE_TASK : ADD_TASK
     const savedTask = await taskService.save(task)
-    store.dispatch(getCmdAddTask(savedTask))
+    store.dispatch({ type, task: savedTask })
     return savedTask
   } catch (err) {
     console.log('Cannot add task', err)
@@ -121,7 +122,7 @@ function getCmdAddTaskMsg(msg) {
 // unitTestActions()
 async function unitTestActions() {
   await loadTasks()
-  await addTask(taskService.getEmptyTask())
+  await saveTask(taskService.getEmptyTask())
   await updateTask({
     id: 'm1oC7',
     title: 'Task-Good',

@@ -36,10 +36,8 @@ async function query(filterBy = { txt: '' }) {
   if (status) {
     tasks.filter((task) => task.status === status)
   }
-  if (priority !== 'All') {
-    console.log(priority)
+  if (priority && priority !== 'All') {
     tasks = tasks.filter((task) => task.priority === priority)
-    console.log(tasks)
   }
 
   return tasks
@@ -65,6 +63,7 @@ async function save(task) {
       status: task.status,
       priority: task.priority,
       tags: task.tags,
+      description: task.description,
     }
     savedTask = await storageService.put(STORAGE_KEY, taskToSave)
   } else {

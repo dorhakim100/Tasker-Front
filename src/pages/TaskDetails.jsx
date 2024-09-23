@@ -26,7 +26,7 @@ export function TaskDetails() {
   }
 
   return (
-    <section className='task-details-page'>
+    <section className='task-details-container'>
       <Link to='/task'>Back to list</Link>
       <h1>What To Do</h1>
       {task && (
@@ -34,14 +34,13 @@ export function TaskDetails() {
           className={
             task.status === 'Completed'
               ? 'task-details completed'
-              : task.priority === 'Critical' || 'High'
+              : task.priority === 'High' || task.priority === 'Critical'
               ? 'task-details priority'
               : 'task-details'
           }
         >
-          <h2>{task.title}</h2>
+          <h3>{task.title}</h3>
           <h4>{task.description}</h4>
-          <h4>{task.dueDate}</h4>
         </div>
       )}
       {/* <button

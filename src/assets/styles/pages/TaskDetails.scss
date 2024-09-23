@@ -1,19 +1,14 @@
 .task-details {
-    padding: 1em;
     margin: 1em;
-    border-radius: 5px;
+    padding: 1em;
     background-color: $black-card-background;
+    border-radius: 8px;
+
 }
 
 .task-details.completed{
-    h2{
-        color: $green-secondary;
-
-    }
+    color: $green-secondary;
 }
 .task-details.priority{
-    h2{
-        color: $red;
-
-    }
+    color: $red;
 }

@@ -1,22 +1,39 @@
-.task-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 0.5em;
+.list {
+    --min-column-size: 220px;
 
-  .task-container {
-    display: grid;
-    grid-template-columns: max-content auto;
-    padding: 0.5em;
-    background-color: $clr2;
+    display: flex;
+    overflow-x: auto;
+    height: calc(100vh - 360px);
+    background-color: $blue-primary;
+    // grid-template-columns: repeat(auto-fit, minmax(var(--min-column-size), 1fr));
+    gap: .5em;
+    padding: 1em;
+    align-items: start;
+    justify-items: center;
 
-    color: $clr6;
+    li {
+        display: grid;
 
-    .actions {
-      justify-self: end;
+        grid-template-columns: max-content auto;
+        gap: 2em;
+        padding: .5em;
+        background-color: $black-card-background;
+        // min-width: 200px;
+        align-items: start;
+        justify-items: center;
 
-      button {
-        padding: 0.3em 0.5em;
-      }
+
+        color: $text-light;
+        border-radius: 8px;
+
+        .actions {
+            justify-self: end;
+
+            display: flex;
+
+            button {
+                padding: .3em .5em;
+            }
+        }
     }
-  }
 }

@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import { taskService } from '../services/task/task.service.js'
-import { addTask, loadTasks } from '../store/actions/task.actions.js'
+import { saveTask, loadTasks } from '../store/actions/task.actions.js'
 
 import { Button } from '@mui/material'
 import { IoMdCloseCircle } from 'react-icons/io'
@@ -12,6 +12,7 @@ export function TaskEdit({
   onMouseDown,
   toggleModal,
   closeEditModal,
+  taskToEdit,
 }) {
   const [editTask, setEditTask] = useState({
     ...taskService.getEmptyTask(),
@@ -20,7 +21,15 @@ export function TaskEdit({
 
   useEffect(() => {
     // setEditTask({ ...task })
-  }, [editTask])
+    if (taskToEdit) {
+      setEditTask({ ...taskToEdit })
+    } else {
+      setEditTask({
+        ...taskService.getEmptyTask(),
+        id: 'create',
+      })
+    }
+  }, [taskToEdit])
 
   function handleChange({ target }) {
     const field = target.name
@@ -66,7 +75,7 @@ export function TaskEdit({
     if (editTask.id === 'create') delete editTask.id
 
     try {
-      await addTask(editTask)
+      await saveTask(editTask)
       closeEditModal()
       loadTasks()
     } catch (err) {
@@ -152,7 +161,7 @@ export function TaskEdit({
           />
         </div>
         <Button variant='contained' type='submit'>
-          Add Task
+          {(!taskToEdit && 'Add Task') || 'Save Task'}
         </Button>
       </form>
     </div>

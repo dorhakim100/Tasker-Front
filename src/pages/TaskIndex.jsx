@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 
 import {
   loadTasks,
-  addTask,
+  saveTask,
   updateTask,
   removeTask,
   addTaskMsg,
@@ -30,6 +30,7 @@ export function TaskIndex() {
   const [modalPosition, setModalPosition] = useState({ x: 0, y: 0 })
   const offsetRef = useRef({ x: 0, y: 0 })
   const requestRef = useRef(null)
+  const [taskToEdit, setTaskToEdit] = useState(taskService.getEmptyTask())
 
   useEffect(() => {
     loadTasks(filterBy)
@@ -41,27 +42,17 @@ export function TaskIndex() {
     try {
       await removeTask(taskId)
       showSuccessMsg('Task removed')
+      loadTasks(filterBy)
     } catch (err) {
       showErrorMsg('Cannot remove task')
     }
   }
 
-  async function onAddTask() {
-    const task = taskService.getEmptyTask()
-    task.vendor = prompt('Vendor?')
-    try {
-      const savedTask = await addTask(task)
-      showSuccessMsg(`Task added (id: ${savedTask._id})`)
-    } catch (err) {
-      showErrorMsg('Cannot add task')
-    }
-  }
-
   async function onUpdateTask(task) {
-    const speed = +prompt('New speed?', task.speed)
-    if (speed === 0 || speed === task.speed) return
-
-    const taskToSave = { ...task, speed }
+    setTaskToEdit(task)
+    if (modalRef.current.style.display !== 'flex') {
+      toggleModal()
+    }
     try {
       const savedTask = await updateTask(taskToSave)
       showSuccessMsg(`Task updated, new speed: ${savedTask.speed}`)
@@ -133,17 +124,17 @@ export function TaskIndex() {
     <main className='task-index'>
       <header className='header-container'>
         <h2>Tasks</h2>
-        <Button
-          variant='contained'
-          onClick={(event) => {
-            toggleModal(event)
-          }}
-        >
-          Add
-        </Button>
 
         {userService.getLoggedinUser() && (
-          <button onClick={onAddTask}>Add a Task</button>
+          <Button
+            variant='contained'
+            onClick={(event) => {
+              setTaskToEdit(null)
+              toggleModal(event)
+            }}
+          >
+            Add
+          </Button>
         )}
       </header>
       <TaskFilter filterBy={filterBy} setFilterBy={setFilterBy} />
@@ -162,6 +153,7 @@ export function TaskIndex() {
         toggleModal={toggleModal}
         onMouseDown={onMouseDown}
         closeEditModal={closeEditModal}
+        taskToEdit={taskToEdit}
       />
     </main>
   )

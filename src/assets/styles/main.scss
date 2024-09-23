@@ -24,7 +24,7 @@
 @import "pages/LoginSignup";
 
 // Components
-@import "cmps/list";
+
 @import "cmps/preview";
 
 @import "cmps/AppHeader";
@@ -37,5 +37,5 @@
 @import "cmps/ReviewPreview";
 @import "cmps/TaskEdit.scss";
 
-// @import "cmps/TaskList";
+@import "cmps/TaskList.scss";
 // @import "cmps/TaskPreview";

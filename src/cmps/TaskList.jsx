@@ -2,6 +2,7 @@ import { userService } from '../services/user/user.service.js'
 import { TaskPreview } from './TaskPreview.jsx'
 
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
+import { Button, ButtonGroup } from '@mui/material'
 
 import { RxDotsHorizontal } from 'react-icons/rx'
 
@@ -50,10 +51,15 @@ export function TaskList({ tasks, onRemoveTask, onUpdateTask, setTasks }) {
                   >
                     <TaskPreview task={task} />
                     {shouldShowActionBtns(task) && (
-                      <div className='actions'>
-                        <button onClick={() => onUpdateTask(task)}>Edit</button>
-                        <button onClick={() => onRemoveTask(task.id)}>x</button>
-                      </div>
+                      <ButtonGroup
+                        variant='contained'
+                        aria-label='Basic button group'
+                      >
+                        <Button onClick={() => onUpdateTask(task)}>Edit</Button>
+                        <Button onClick={() => onRemoveTask(task.id)}>
+                          Remove
+                        </Button>
+                      </ButtonGroup>
                     )}
                   </div>
                 )}
