@@ -1,10 +1,19 @@
 .task-index {
-  header {
-    display: flex;
+  .header-container {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+
     align-items: center;
+    justify-items: center;
     justify-content: space-between;
 
-    padding-block: 0.3em;
+    padding: 0.5em;
+
+    button{
+      color: $text-light; /* Ensure text is visible */
+      border: 1px solid $border-white;
+
+    }
   }
 
   h2 {

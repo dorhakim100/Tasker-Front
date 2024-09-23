@@ -1,17 +1,24 @@
 .list {
     --min-column-size: 220px;
 
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(var(--min-column-size), 1fr));
+    display: flex;
+    overflow-x: auto;
+    height: calc(100vh - 360px);
+    background-color: $blue-primary;
+    // grid-template-columns: repeat(auto-fit, minmax(var(--min-column-size), 1fr));
     gap: .5em;
+    padding: 1em;
+    align-items: start;
+    justify-items: center;
 
     li {
         display: grid;
         grid-template-columns: max-content auto;
         padding: .5em;
-        background-color: $clr2;
+        background-color: $black-card-background;
 
-        color: $clr6;
+        color: $text-light;
+        border-radius: 8px;
 
         .actions {
             justify-self: end;

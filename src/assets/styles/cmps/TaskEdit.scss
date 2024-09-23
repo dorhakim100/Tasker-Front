@@ -1,0 +1,120 @@
+.task-edit-modal {
+    position: absolute;
+    // width: 400px;
+    padding: 20px;
+    background-color: $white-card-background;
+    border-radius: 10px;
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.1);
+    z-index: 50;
+    transition: all 0.2s ease;
+
+    .close-button-container{
+        background-color: $text-dark;
+        position: absolute;
+        inset-inline-end: 1em;
+        height: 1.2em;
+        border-radius: 50%;
+        cursor: pointer;
+        
+        &:hover{
+            background-color: $red;
+            
+        }
+
+        svg{
+            font-size: 1.2em;
+            padding: 0px;
+        }
+    }
+  
+    &.is-dragging {
+      cursor: grabbing;
+      z-index: 100;
+    }
+  
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+  
+    // Title Container Styling
+    .title-container,
+    .description-container,
+    .date-container,
+    .priority-container, .status-container {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 20px;
+  
+      label {
+        font-size: 14px;
+        color: #4f3a65;
+        margin-bottom: 8px;
+      }
+  
+      input,
+      textarea,
+      select {
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #95adbe;
+        border-radius: 5px;
+        transition: border-color 0.3s ease;
+  
+        &:focus {
+          border-color: $blue-primary;
+          outline: none;
+        }
+      }
+  
+      textarea {
+        resize: vertical;
+        min-height: 80px;
+      }
+    }
+  
+    // Styling for individual priority dropdown
+    .priority-container select {
+      background-color: #fff;
+      cursor: pointer;
+    }
+
+    .status-container{
+        justify-self: center;
+        align-self: center;
+        input{
+            display: none;
+        }
+        label{
+            padding: 0.3em;
+            border: 1px solid $text-dark;
+            border-radius: 8px;
+            background-color: $white-card-background;
+            cursor: pointer;
+            &:hover{
+                background-color: $gray-background;
+            }
+
+        }
+        &:has(input:checked) > label{
+            background-color: $blue-primary;
+            color: $text-light;
+        }
+    }
+  
+    // Button Styling (optional for future submit buttons)
+    button {
+    //   background-color: $blue-primary;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+  
+      &:hover {
+        // background-color: #a82257;
+      }
+    }
+  }

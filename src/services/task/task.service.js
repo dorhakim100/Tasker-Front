@@ -13,41 +13,33 @@ export const taskService = {
   getById,
   save,
   remove,
+  getDefaultFilter,
+  getEmptyTask,
 }
 window.cs = taskService
 
-async function query(filterBy = { txt: '', price: 0 }) {
+async function query(filterBy = { txt: '' }) {
   var tasks = await storageService.query(STORAGE_KEY)
-  const { txt, minSpeed, maxPrice, sortField, sortDir } = filterBy
+  const { txt, dueDate, status, creationTime, priority, tags, sortDir } =
+    filterBy
 
   if (txt) {
     const regex = new RegExp(filterBy.txt, 'i')
     tasks = tasks.filter(
-      (task) => regex.test(task.vendor) || regex.test(task.description)
+      (task) => regex.test(task.title) || regex.test(task.description)
     )
   }
-  if (minSpeed) {
-    tasks = tasks.filter((task) => task.speed >= minSpeed)
-  }
-  if (sortField === 'vendor' || sortField === 'owner') {
-    tasks.sort(
-      (task1, task2) =>
-        task1[sortField].localeCompare(task2[sortField]) * +sortDir
-    )
-  }
-  if (sortField === 'price' || sortField === 'speed') {
-    tasks.sort(
-      (task1, task2) => (task1[sortField] - task2[sortField]) * +sortDir
-    )
+  if (dueDate) {
+    tasks = tasks.filter((task) => task.dueDate <= dueDate)
   }
 
-  tasks = tasks.map(({ _id, vendor, price, speed, owner }) => ({
-    _id,
-    vendor,
-    price,
-    speed,
-    owner,
-  }))
+  if (status) {
+    tasks.filter((task) => task.status === status)
+  }
+  if (priority) {
+    tasks.filter((task) => task.priority === priority)
+  }
+
   return tasks
 }
 
@@ -62,22 +54,29 @@ async function remove(taskId) {
 
 async function save(task) {
   var savedTask
-  if (task._id) {
+  if (task.id) {
     const taskToSave = {
-      _id: task._id,
-      price: task.price,
-      speed: task.speed,
+      id: task.id,
+      title: task.title,
+      dueDate: task.dueDate,
+      status: task.status,
+      priority: task.priority,
+      tags: task.tags,
     }
     savedTask = await storageService.put(STORAGE_KEY, taskToSave)
   } else {
     const taskToSave = {
-      vendor: task.vendor,
-      price: task.price,
-      speed: task.speed,
+      title: task.title,
+      dueDate: task.dueDate,
+      status: task.status,
+      priority: task.priority,
+      tags: task.tags,
+      creationTime: new Date().toISOString(),
       // Later, owner is set by the backend
       owner: userService.getLoggedinUser(),
       msgs: [],
     }
+
     savedTask = await storageService.post(STORAGE_KEY, taskToSave)
   }
   return savedTask
@@ -96,6 +95,30 @@ async function addTaskMsg(taskId, txt) {
   await storageService.put(STORAGE_KEY, task)
 
   return msg
+}
+
+function getDefaultFilter() {
+  return {
+    txt: '',
+    dueDate: null,
+    status: 'All',
+    creationTime: null,
+    priority: 'All',
+    tags: [],
+    sortDir: 1,
+  }
+}
+
+function getEmptyTask() {
+  return {
+    id: makeId(),
+    title: '',
+    description: '',
+    status: 'To Do',
+    priority: 'Medium',
+
+    tags: [],
+  }
 }
 
 function _createLocalTasks() {

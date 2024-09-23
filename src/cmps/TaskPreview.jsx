@@ -4,12 +4,9 @@ export function TaskPreview({ task }) {
   return (
     <article className='preview'>
       <header>
-        <Link to={`/task/${task._id}`}>{task.vendor}</Link>
+        <Link to={`/task/${task._id}`}>{task.title}</Link>
       </header>
 
-      <p>
-        Speed: <span>{task.speed.toLocaleString()} Km/h</span>
-      </p>
       {task.owner && (
         <p>
           Owner: <span>{task.owner.fullname}</span>

@@ -9,6 +9,14 @@ import {
   ADD_TASK_MSG,
 } from '../reducers/task.reducer.js'
 
+export async function setTasks(tasks) {
+  try {
+    store.dispatch(getCmdSetTasks(tasks))
+  } catch (err) {
+    console.log(err)
+  }
+}
+
 export async function loadTasks(filterBy) {
   try {
     const tasks = await taskService.query(filterBy)
@@ -115,7 +123,7 @@ async function unitTestActions() {
   await loadTasks()
   await addTask(taskService.getEmptyTask())
   await updateTask({
-    _id: 'm1oC7',
+    id: 'm1oC7',
     title: 'Task-Good',
   })
   await removeTask('m1oC7')

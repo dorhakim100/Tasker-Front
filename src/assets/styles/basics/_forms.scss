@@ -7,6 +7,16 @@ button {
 	cursor: pointer;
 }
 
+
+
+// button {
+// 	display: block; /* Ensure it’s not set to none */
+// 	visibility: visible; /* Ensure visibility is not hidden */
+// 	z-index: 1; /* Ensure it's on top of other elements */
+// 	color: black; /* Ensure text is visible */
+// 	background-color: white; /* Ensure background isn't transparent */
+//   }
+
 form > * {
 	display: block;
 	// width: 200px;
@@ -15,7 +25,7 @@ form > * {
 
 .btn-link {
 	border: 0;
-	background-color: transparent;
+	// background-color: transparent;
 	// text-decoration: underline;
 	transition: 0.5s;
 }
