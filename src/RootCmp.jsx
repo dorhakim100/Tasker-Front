@@ -13,13 +13,14 @@ import { UserMsg } from './cmps/UserMsg.jsx'
 import { LoginSignup } from './pages/LoginSignup.jsx'
 import { Login } from './pages/Login.jsx'
 import { Signup } from './pages/Signup.jsx'
+import { UserStats } from './cmps/UserStats'
 
 export function RootCmp() {
   return (
     <div className='main-container'>
       <AppHeader />
       <UserMsg />
-
+      <UserStats />
       <main>
         <Routes>
           <Route path='' element={<HomePage />} />

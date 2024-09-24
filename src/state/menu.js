@@ -40,6 +40,15 @@ export async function saveTask(task) {
   }
 }
 
+export async function signup(credentials) {
+  try {
+    const user = await userService.signup(credentials)
+    return user
+  } catch (err) {
+    console.log(err)
+  }
+}
+
 export async function login(credentials) {
   try {
     const user = await userService.login(credentials)
@@ -51,4 +60,13 @@ export async function login(credentials) {
 
 export async function logout() {
   await userService.logout()
+}
+
+export async function loadUser(userId) {
+  try {
+    const user = await userService.getById(userId)
+    return user
+  } catch (err) {
+    console.log(err)
+  }
 }

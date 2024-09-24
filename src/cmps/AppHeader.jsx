@@ -10,6 +10,7 @@ import { logout } from '../state/menu.js'
 import { loggedinUser } from '../state/atom.js'
 
 import { Button } from '@mui/material'
+import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 
 export function AppHeader() {
   // const user = useSelector((storeState) => storeState.userModule.user)
@@ -45,9 +46,13 @@ export function AppHeader() {
         )}
         {user && (
           <div className='user-info'>
-            <Link to={`user/${user._id}`}>
-              {/* {user.imgUrl && <img src={user.imgUrl} />} */}
-              {user.fullname}
+            <Link to={`user/${user.id}`}>
+              <div className='profile-container'>
+                {(user.imgUrl && <img src={user.imgUrl} />) || (
+                  <AccountCircleIcon />
+                )}
+                {user.fullname}
+              </div>
             </Link>
             {/* <span className="score">{user.score?.toLocaleString()}</span> */}
             <Button variant='contained' onClick={onLogout}>

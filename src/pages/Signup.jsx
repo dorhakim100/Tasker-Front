@@ -1,13 +1,16 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router'
 
-import { signup } from '../store/actions/user.actions.js'
+import { signup } from '../state/menu.js'
+import { loggedinUser } from '../state/atom.js'
+import { useRecoilState } from 'recoil'
 
 import { ImgUploader } from '../cmps/ImgUploader'
 import { userService } from '../services/user/user.service.js'
 import { Button } from '@mui/material'
 
 export function Signup() {
+  const [user, setUser] = useRecoilState(loggedinUser)
   const [credentials, setCredentials] = useState(userService.getEmptyUser())
   const navigate = useNavigate()
 
@@ -28,9 +31,14 @@ export function Signup() {
 
     if (!credentials.username || !credentials.password || !credentials.fullname)
       return
-    await signup(credentials)
-    clearState()
-    navigate('/')
+    try {
+      const signedUp = await signup(credentials)
+      setUser(signedUp)
+      clearState()
+      navigate('/')
+    } catch (err) {
+      console.log(err)
+    }
   }
 
   function onUploaded(imgUrl) {
@@ -38,7 +46,7 @@ export function Signup() {
   }
 
   return (
-    <form className='signup-form' onSubmit={onSignup}>
+    <form className='signup-form'>
       <input
         type='text'
         name='fullname'
@@ -64,7 +72,9 @@ export function Signup() {
         required
       />
       <ImgUploader onUploaded={onUploaded} />
-      <Button variant='contained'>Signup</Button>
+      <Button variant='contained' onClick={onSignup}>
+        Signup
+      </Button>
     </form>
   )
 }

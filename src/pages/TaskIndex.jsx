@@ -1,10 +1,8 @@
 import { useState, useEffect, useRef } from 'react'
-// import { useSelector } from 'react-redux'
 import { useRecoilState } from 'recoil'
 
-import { updateTask, removeTask } from '../store/actions/task.actions'
-
 import { tasksState, filterState } from '../state/atom.js'
+import { removeTask } from '../state/menu.js'
 
 import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service'
 import { taskService } from '../services/task/task.service.js'

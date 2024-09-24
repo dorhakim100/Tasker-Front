@@ -29,8 +29,8 @@ export function Login() {
   }
 
   async function onLogin(ev = null) {
+    console.log('works')
     if (ev) ev.preventDefault()
-
     if (!credentials.username) return
     try {
       const loggedinUser = await login(credentials)
@@ -48,7 +48,7 @@ export function Login() {
   }
 
   return (
-    <form className='login-form' onSubmit={onLogin}>
+    <form className='login-form'>
       <select
         name='username'
         value={credentials.username}
@@ -61,7 +61,9 @@ export function Login() {
           </option>
         ))}
       </select>
-      <Button variant='contained'>Login</Button>
+      <Button variant='contained' onClick={onLogin}>
+        Login
+      </Button>
     </form>
   )
 }
