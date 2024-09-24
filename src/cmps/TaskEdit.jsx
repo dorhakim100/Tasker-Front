@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import { taskService } from '../services/task/task.service.js'
-import { saveTask, loadTasks } from '../store/actions/task.actions.js'
+import { saveTask } from '../store/actions/task.actions.js'
 
 import { Button } from '@mui/material'
 import { IoMdCloseCircle } from 'react-icons/io'
@@ -13,6 +13,7 @@ export function TaskEdit({
   toggleModal,
   closeEditModal,
   taskToEdit,
+  loadTasks,
 }) {
   const [editTask, setEditTask] = useState({
     ...taskService.getEmptyTask(),

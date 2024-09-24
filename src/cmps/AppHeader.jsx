@@ -1,11 +1,17 @@
 import { Link, NavLink } from 'react-router-dom'
 import { useNavigate } from 'react-router'
 import { useSelector } from 'react-redux'
+import { useRecoilState } from 'recoil'
+
 import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service'
 import { logout } from '../store/actions/user.actions'
 
+import { loggedinUser } from '../state/atom.js'
+
 export function AppHeader() {
-  const user = useSelector((storeState) => storeState.userModule.user)
+  // const user = useSelector((storeState) => storeState.userModule.user)
+  const [user, setUser] = useRecoilState(loggedinUser)
+
   const navigate = useNavigate()
 
   async function onLogout() {

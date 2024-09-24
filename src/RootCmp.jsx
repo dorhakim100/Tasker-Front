@@ -2,11 +2,7 @@ import React from 'react'
 import { Routes, Route } from 'react-router'
 
 import { HomePage } from './pages/HomePage'
-import { AboutUs, AboutTeam, AboutVision } from './pages/AboutUs'
 import { TaskIndex } from './pages/TaskIndex.jsx'
-import { ReviewIndex } from './pages/ReviewIndex.jsx'
-import { ChatApp } from './pages/Chat.jsx'
-import { AdminIndex } from './pages/AdminIndex.jsx'
 
 import { TaskDetails } from './pages/TaskDetails'
 import { UserDetails } from './pages/UserDetails'

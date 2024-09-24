@@ -1,19 +1,29 @@
 import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+// import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 
 import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service'
-import { loadTask, addTaskMsg } from '../store/actions/task.actions'
+// import { loadTask, addTaskMsg } from '../store/actions/task.actions'
+
+import { loadTask } from '../state/menu.js'
+
+import { currTask } from '../state/atom.js'
 
 import { TaskEdit } from '../cmps/TaskEdit.jsx'
+import { useRecoilState } from 'recoil'
 
 export function TaskDetails() {
   const { taskId } = useParams()
-  const task = useSelector((storeState) => storeState.taskModule.task)
+  // const task = useSelector((storeState) => storeState.taskModule.task)
+  const [task, setTask] = useRecoilState(currTask)
 
   useEffect(() => {
-    loadTask(taskId)
+    const setCurrTask = async () => {
+      const curr = await loadTask(taskId)
+      setTask(curr)
+    }
+    setCurrTask()
   }, [taskId])
 
   async function onAddTaskMsg(taskId) {

@@ -1,14 +1,10 @@
 import { useState, useEffect, useRef } from 'react'
-import { useSelector } from 'react-redux'
+// import { useSelector } from 'react-redux'
+import { useRecoilState } from 'recoil'
 
-import {
-  loadTasks,
-  saveTask,
-  updateTask,
-  removeTask,
-  addTaskMsg,
-  setTasks,
-} from '../store/actions/task.actions'
+import { updateTask, removeTask } from '../store/actions/task.actions'
+
+import { tasksState, filterState } from '../state/atom.js'
 
 import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service'
 import { taskService } from '../services/task/task.service.js'
@@ -22,7 +18,9 @@ import { TaskEdit } from '../cmps/TaskEdit.jsx'
 
 export function TaskIndex() {
   const [filterBy, setFilterBy] = useState(taskService.getDefaultFilter())
-  const tasks = useSelector((storeState) => storeState.taskModule.tasks)
+  // const tasks = useSelector((storeState) => storeState.taskModule.tasks)
+  const [tasks, setTasks] = useRecoilState(tasksState)
+  const [filter, setFilter] = useRecoilState(filterState)
 
   // modal
   const modalRef = useRef()
@@ -33,10 +31,16 @@ export function TaskIndex() {
   const [taskToEdit, setTaskToEdit] = useState(taskService.getEmptyTask())
 
   useEffect(() => {
-    loadTasks(filterBy)
+    // loadTasks(filterBy)
+    loadTasks()
   }, [filterBy])
 
   useEffect(() => {}, [])
+  const loadTasks = async () => {
+    setFilter(filterBy)
+    const filteredTasks = await taskService.query(filterBy)
+    setTasks(filteredTasks)
+  }
 
   async function onRemoveTask(taskId) {
     try {
@@ -53,12 +57,13 @@ export function TaskIndex() {
     if (modalRef.current.style.display !== 'flex') {
       toggleModal()
     }
-    try {
-      const savedTask = await updateTask(taskToSave)
-      showSuccessMsg(`Task updated, new speed: ${savedTask.speed}`)
-    } catch (err) {
-      showErrorMsg('Cannot update task')
-    }
+    // try {
+    //   const savedTask = await updateTask(taskToSave)
+    //   loadTasks(filterBy)
+    //   showSuccessMsg(`Task updated, new speed: ${savedTask.speed}`)
+    // } catch (err) {
+    //   showErrorMsg('Cannot update task')
+    // }
   }
 
   function toggleModal(ev) {
@@ -154,6 +159,7 @@ export function TaskIndex() {
         onMouseDown={onMouseDown}
         closeEditModal={closeEditModal}
         taskToEdit={taskToEdit}
+        loadTasks={loadTasks}
       />
     </main>
   )
