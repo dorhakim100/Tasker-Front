@@ -12,6 +12,9 @@ import { currTask } from '../state/atom.js'
 import { TaskEdit } from '../cmps/TaskEdit.jsx'
 import { useRecoilState } from 'recoil'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
+import ComputerIcon from '@mui/icons-material/Computer'
+import QueryBuilderIcon from '@mui/icons-material/QueryBuilder'
+import DescriptionIcon from '@mui/icons-material/Description'
 import { Button } from '@mui/material'
 
 export function TaskDetails() {
@@ -45,9 +48,18 @@ export function TaskDetails() {
               : 'task-details'
           }
         >
-          <h3>{task.title}</h3>
-          <h4>{task.dueDate}</h4>
-          <h4>{task.description}</h4>
+          <div className='section-container title'>
+            <ComputerIcon />
+            <h3>{task.title}</h3>
+          </div>
+          <div className='section-container date'>
+            <QueryBuilderIcon />
+            <h4>{task.dueDate}</h4>
+          </div>
+          <div className='section-container description'>
+            <DescriptionIcon />
+            <p>{task.description}</p>
+          </div>
           <PriorityRange task={task} />
 
           {task.tags.map((tag) => {

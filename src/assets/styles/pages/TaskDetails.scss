@@ -15,7 +15,24 @@
     background-color: $black-card-background;
     border-radius: 8px;
 
+    .section-container{
+        display: flex;
+        align-items: center;
+        justify-items: center;
 
+        gap: 1em;
+        h3,h4,p{
+            margin: 0px;
+        }
+
+        p{
+            width: 100%;
+            background-color: $medium-gray;
+            border-radius: 5px;
+            padding: 5px;
+
+        }
+    }
     .priority-slider {
         width: 100%;
         text-align: center;
