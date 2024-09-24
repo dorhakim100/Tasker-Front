@@ -50,7 +50,6 @@ export function TaskDetails() {
       >
         Add task msg
       </button> */}
-      <TaskEdit task={task} />
     </section>
   )
 }
