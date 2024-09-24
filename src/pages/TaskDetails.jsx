@@ -1,8 +1,9 @@
 import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service'
+import { makeId } from '../services/util.service'
 
 import { loadTask } from '../state/menu.js'
 
@@ -10,10 +11,13 @@ import { currTask } from '../state/atom.js'
 
 import { TaskEdit } from '../cmps/TaskEdit.jsx'
 import { useRecoilState } from 'recoil'
+import ArrowBackIcon from '@mui/icons-material/ArrowBack'
+import { Button } from '@mui/material'
 
 export function TaskDetails() {
   const { taskId } = useParams()
   const [task, setTask] = useRecoilState(currTask)
+  const navigate = useNavigate()
 
   useEffect(() => {
     const setCurrTask = async () => {
@@ -25,7 +29,11 @@ export function TaskDetails() {
 
   return (
     <section className='task-details-container'>
-      <Link to='/task'>Back to list</Link>
+      <div className='button-container'>
+        <Button variant='contained' onClick={() => navigate('/task')}>
+          <ArrowBackIcon />
+        </Button>
+      </div>
       <h1>What To Do</h1>
       {task && (
         <div
@@ -38,9 +46,45 @@ export function TaskDetails() {
           }
         >
           <h3>{task.title}</h3>
+          <h4>{task.dueDate}</h4>
           <h4>{task.description}</h4>
+          <PriorityRange task={task} />
+
+          {task.tags.map((tag) => {
+            return <span key={`${tag}${makeId()}`}>{tag}</span>
+          })}
         </div>
       )}
     </section>
+  )
+}
+
+function PriorityRange({ task }) {
+  return (
+    <div className='priority-slider'>
+      <input
+        className='priority-range'
+        type='range'
+        value={
+          task.priority === 'Critical'
+            ? 88
+            : task.priority === 'High'
+            ? 62.5
+            : task.priority === 'Medium'
+            ? 36.5
+            : 12
+        }
+        min='0'
+        max='100'
+        step='1'
+        readOnly
+      />
+      <div className='priority-labels'>
+        <span>Low</span>
+        <span>Medium</span>
+        <span>High</span>
+        <span>Critical</span>
+      </div>
+    </div>
   )
 }

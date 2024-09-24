@@ -20,13 +20,9 @@ export function TaskFilter({ filterBy, setFilterBy }) {
   }, [filterToEdit])
 
   function handleChange(ev) {
-    console.log(ev)
-    const type = ev.target.type
+    let type = ev.target.type
     const field = ev.target.name
     let value
-
-    console.log(type)
-    console.log(field)
 
     switch (type) {
       case 'text':
@@ -67,6 +63,11 @@ export function TaskFilter({ filterBy, setFilterBy }) {
     }
   }
 
+  function handlePriorityChange(ev) {
+    const valueToSet = ev.target.value
+    setFilterToEdit({ ...filterToEdit, priority: valueToSet })
+  }
+
   return (
     <section className='task-filter'>
       {/* <h3>Filter:</h3> */}
@@ -89,9 +90,11 @@ export function TaskFilter({ filterBy, setFilterBy }) {
               labelId='priority'
               id='priority'
               name='priority'
-              value={filterBy.priority}
+              value={filterToEdit.priority}
               label='priority'
-              onChange={handleChange}
+              type='select-one'
+              onChange={handlePriorityChange}
+              className='select'
             >
               <MenuItem value='All'>All</MenuItem>
               <MenuItem value='Low'>Low</MenuItem>

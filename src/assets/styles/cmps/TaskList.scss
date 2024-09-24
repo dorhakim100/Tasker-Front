@@ -12,9 +12,9 @@
     justify-items: center;
 
     .task-container {
-        display: grid;
-
-        grid-template-columns: max-content auto;
+     
+    display: grid;
+    grid-template-rows: 1fr auto;
         gap: 2em;
         padding: .5em;
         background-color: $black-card-background;

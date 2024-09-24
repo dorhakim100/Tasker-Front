@@ -1,7 +1,8 @@
 .task-filter {
   display: grid;
-  grid-template-columns: 1fr 5em 5em auto;
-  grid-template-columns: 10em 5em 15em 5em auto;
+  // grid-template-columns: 1fr 5em 5em auto;
+  grid-template-columns: repeat(5,auto);
+  grid-template-rows: repeat(2,1fr);
   align-items: center;
   justify-items: center;
   gap: 0 0.5em;
@@ -41,6 +42,11 @@
 
   .priority-container{
     color: $text-light;
+    .select{
+      min-width: 200px;
+
+
+    }
   }
   
   select{

@@ -5,13 +5,10 @@ export function TaskPreview({ task }) {
     <article className='preview'>
       <header>
         <Link to={`/task/${task.id}`}>{task.title}</Link>
+        <span>{task.dueDate}</span>
       </header>
 
-      {task.owner && (
-        <p>
-          Owner: <span>{task.owner.fullname}</span>
-        </p>
-      )}
+      {task.owner && <span>{task.owner}</span>}
     </article>
   )
 }
