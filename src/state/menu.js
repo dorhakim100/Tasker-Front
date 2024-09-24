@@ -1,4 +1,5 @@
 import { taskService } from '../services/task/task.service.js'
+import { userService } from '../services/user/user.service.js'
 
 export async function loadTasks(filterBy) {
   try {
@@ -37,4 +38,17 @@ export async function saveTask(task) {
     console.log('Cannot add task', err)
     throw err
   }
+}
+
+export async function login(credentials) {
+  try {
+    const user = await userService.login(credentials)
+    return user
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+export async function logout() {
+  await userService.logout()
 }

@@ -26,8 +26,8 @@ export function RootCmp() {
           <Route path='task' element={<TaskIndex />} />
           <Route path='task/:taskId' element={<TaskDetails />} />
           <Route path='user/:id' element={<UserDetails />} />
-          <Route path='login' element={<LoginSignup />}>
-            <Route index element={<Login />} />
+          <Route path='login-signup' element={<LoginSignup />}>
+            <Route path='login' index element={<Login />} />
             <Route path='signup' element={<Signup />} />
           </Route>
         </Routes>

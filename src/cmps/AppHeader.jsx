@@ -4,9 +4,12 @@ import { useSelector } from 'react-redux'
 import { useRecoilState } from 'recoil'
 
 import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service'
-import { logout } from '../store/actions/user.actions'
+// import { logout } from '../store/actions/user.actions'
+import { logout } from '../state/menu.js'
 
 import { loggedinUser } from '../state/atom.js'
+
+import { Button } from '@mui/material'
 
 export function AppHeader() {
   // const user = useSelector((storeState) => storeState.userModule.user)
@@ -17,6 +20,7 @@ export function AppHeader() {
   async function onLogout() {
     try {
       await logout()
+      setUser(null)
       navigate('/')
       showSuccessMsg(`Bye now`)
     } catch (err) {
@@ -35,7 +39,7 @@ export function AppHeader() {
         {user?.isAdmin && <NavLink to='/admin'>Admin</NavLink>}
 
         {!user && (
-          <NavLink to='login' className='login-link'>
+          <NavLink to='login-signup/login' className='login-link'>
             Login
           </NavLink>
         )}
@@ -46,7 +50,9 @@ export function AppHeader() {
               {user.fullname}
             </Link>
             {/* <span className="score">{user.score?.toLocaleString()}</span> */}
-            <button onClick={onLogout}>logout</button>
+            <Button variant='contained' onClick={onLogout}>
+              logout
+            </Button>
           </div>
         )}
       </nav>

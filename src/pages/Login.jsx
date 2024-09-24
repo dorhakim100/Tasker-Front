@@ -2,10 +2,15 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router'
 
 import { userService } from '../services/user/user.service.js'
-import { login } from '../store/actions/user.actions'
+import { login } from '../state/menu.js'
+import { loggedinUser } from '../state/atom.js'
+import { useRecoilState } from 'recoil'
+
+import { Button } from '@mui/material'
 
 export function Login() {
   const [users, setUsers] = useState([])
+  const [user, setUser] = useRecoilState(loggedinUser)
   const [credentials, setCredentials] = useState({
     username: '',
     password: '',
@@ -27,8 +32,13 @@ export function Login() {
     if (ev) ev.preventDefault()
 
     if (!credentials.username) return
-    await login(credentials)
-    navigate('/')
+    try {
+      const loggedinUser = await login(credentials)
+      setUser(loggedinUser)
+      navigate('/')
+    } catch (err) {
+      console.log(err)
+    }
   }
 
   function handleChange(ev) {
@@ -51,7 +61,7 @@ export function Login() {
           </option>
         ))}
       </select>
-      <button>Login</button>
+      <Button variant='contained'>Login</Button>
     </form>
   )
 }

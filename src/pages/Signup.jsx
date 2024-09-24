@@ -5,6 +5,7 @@ import { signup } from '../store/actions/user.actions.js'
 
 import { ImgUploader } from '../cmps/ImgUploader'
 import { userService } from '../services/user/user.service.js'
+import { Button } from '@mui/material'
 
 export function Signup() {
   const [credentials, setCredentials] = useState(userService.getEmptyUser())
@@ -63,7 +64,7 @@ export function Signup() {
         required
       />
       <ImgUploader onUploaded={onUploaded} />
-      <button>Signup</button>
+      <Button variant='contained'>Signup</Button>
     </form>
   )
 }

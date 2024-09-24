@@ -3,14 +3,37 @@
 	display: grid;
 	width: min(80%, 300px);
 	margin: auto;
-
+	align-items: center;
+	justify-items: center;
 	padding: 1em;
 	background-color: $clr4;
+	background-color: $text-dark;
+	border-radius: 8px;
+	outline: 2px solid $black-card-background;
+}
+
+.login-form{
+
+	select{
+		border-radius: 5px;
+		padding: 10px;
+		color: $text-dark;
+		outline:none;
+	}
 }
 
 .signup-form {
 	input {
-		width: 100%;
+		padding: 10px;
+        font-size: 16px;
+        border: 1px solid #95adbe;
+        border-radius: 5px;
+        transition: border-color 0.3s ease;
+  
+        &:focus {
+          border-color: $blue-primary;
+          outline: none;
+        }
 	}
 
     .admin-toggle {
@@ -22,6 +45,16 @@
             font-size: .8em;
         }
     }
+	.upload-preview{
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-items: center;
+		gap: 0.5em;
+		img{
+			border-radius: 5px;
+		}
+	}
 }
 
 .login-page nav {
@@ -32,16 +65,22 @@
 
 	margin-block: 100px 0.5em;
 
+
 	a {
 		font-size: 0.8em;
-		color: $clr4;
-
+		color: $text-light;
+		
 		&:hover {
 			color: $clr1;
+			color: $text-light;
 		}
+		padding: 5px;
+		border-radius: 5px;
+		border: 1.5px solid $black-card-background;
 	}
 	a.active {
-		text-decoration: underline;
-		color: $clr2;
+		background-color: $text-dark;
+		// text-decoration: underline;
+		// color: $clr2;
 	}
 }

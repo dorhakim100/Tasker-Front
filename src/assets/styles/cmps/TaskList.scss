@@ -3,7 +3,7 @@
 
     display: flex;
     overflow-x: auto;
-    height: calc(100vh - 360px);
+    height: calc(100vh - 250px);
     background-color: $blue-primary;
     // grid-template-columns: repeat(auto-fit, minmax(var(--min-column-size), 1fr));
     gap: .5em;
