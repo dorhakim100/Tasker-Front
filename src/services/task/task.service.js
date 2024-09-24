@@ -32,9 +32,8 @@ async function query(filterBy = { txt: '' }) {
   if (dueDate) {
     tasks = tasks.filter((task) => task.dueDate <= dueDate)
   }
-
-  if (status && status !== 'All') {
-    tasks.filter((task) => task.status === status)
+  if (status !== 'All') {
+    tasks = tasks.filter((task) => task.status !== 'Completed')
   }
 
   if (priority && priority !== 'All') {

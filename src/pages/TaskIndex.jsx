@@ -36,6 +36,7 @@ export function TaskIndex() {
   useEffect(() => {}, [])
   const loadTasks = async () => {
     setFilter(filterBy)
+    console.log(filterBy)
     const filteredTasks = await taskService.query(filterBy)
     setTasks(filteredTasks)
   }
