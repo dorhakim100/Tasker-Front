@@ -20,27 +20,44 @@ window.cs = taskService
 
 async function query(filterBy = { txt: '' }) {
   var tasks = await storageService.query(STORAGE_KEY)
+  let sortedTasks
   const { txt, dueDate, status, creationTime, priority, tags, sortDir } =
     filterBy
+  console.log(status)
+  const loggedinUser = userService.getLoggedinUser()
+
+  if (loggedinUser) {
+    const regex = new RegExp(loggedinUser.fullname, 'i')
+    tasks = tasks.filter((task) => regex.test(task.owner))
+    console.log(tasks)
+    sortedTasks = loggedinUser.tasksIds.map((id, idx) => {
+      const taskToReturn = tasks.find((task) => task.id === id)
+      console.log(taskToReturn)
+      return taskToReturn
+    })
+  } else {
+    return tasks
+  }
 
   if (txt) {
     const regex = new RegExp(filterBy.txt, 'i')
-    tasks = tasks.filter(
+    sortedTasks = tasks.filter(
       (task) => regex.test(task.title) || regex.test(task.description)
     )
   }
   if (dueDate) {
-    tasks = tasks.filter((task) => task.dueDate <= dueDate)
+    sortedTasks = sortedTasks.filter((task) => task.dueDate <= dueDate)
   }
-  if (status !== 'All') {
-    tasks = tasks.filter((task) => task.status !== 'Completed')
+
+  if (status && status !== 'All') {
+    sortedTasks = sortedTasks.filter((task) => task.status !== 'Completed')
   }
 
   if (priority && priority !== 'All') {
-    tasks = tasks.filter((task) => task.priority === priority)
+    sortedTasks = sortedTasks.filter((task) => task.priority === priority)
   }
 
-  return tasks
+  return sortedTasks
 }
 
 function getById(taskId) {
@@ -49,7 +66,15 @@ function getById(taskId) {
 
 async function remove(taskId) {
   // throw new Error('Nope')
-  await storageService.remove(STORAGE_KEY, taskId)
+  try {
+    await storageService.remove(STORAGE_KEY, taskId)
+    const loggedinUser = userService.getLoggedinUser()
+    const idx = loggedinUser.tasksIds.findIndex((id) => id === taskId)
+    loggedinUser.tasksIds.splice(idx, 1)
+    userService.update(loggedinUser)
+  } catch (err) {
+    console.log(err)
+  }
 }
 
 async function save(task) {
@@ -76,11 +101,13 @@ async function save(task) {
       tags: task.tags,
       creationTime: new Date().toISOString(),
       // Later, owner is set by the backend
-      owner: userService.getLoggedinUser(),
+      owner: userService.getLoggedinUser().fullname || '',
       msgs: [],
     }
-
+    const loggedinUser = userService.getLoggedinUser()
     savedTask = await storageService.post(STORAGE_KEY, taskToSave)
+    loggedinUser.tasksIds.unshift(savedTask.id)
+    await userService.update(loggedinUser)
   }
   return savedTask
 }

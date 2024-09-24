@@ -31,9 +31,9 @@ function remove(userId) {
   return storageService.remove('user', userId)
 }
 
-async function update({ _id, score }) {
-  const user = await storageService.get('user', _id)
-  user.score = score
+async function update({ id, tasksIds }) {
+  const user = await storageService.get('user', id)
+  user.tasksIds = tasksIds
   await storageService.put('user', user)
 
   // When admin updates other user's details, do not update loggedinUser
@@ -54,7 +54,7 @@ async function signup(userCred) {
   if (!userCred.imgUrl)
     userCred.imgUrl =
       'https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359553_1280.png'
-  userCred.score = 10000
+  userCred.tasksIds = []
 
   const user = await storageService.post('user', userCred)
   return saveLoggedinUser(user)
@@ -73,7 +73,7 @@ function saveLoggedinUser(user) {
     id: user.id,
     fullname: user.fullname,
     imgUrl: user.imgUrl,
-    score: user.score,
+    tasksIds: user.tasksIds,
     isAdmin: user.isAdmin,
   }
   sessionStorage.setItem(STORAGE_KEY_LOGGEDIN_USER, JSON.stringify(user))
@@ -85,6 +85,7 @@ function getEmptyUser() {
     fullname: '',
     password: '',
     username: '',
+    tasksIds: [],
     imgUrl:
       'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
   }

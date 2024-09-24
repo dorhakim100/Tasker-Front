@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useRecoilState } from 'recoil'
 
-import { tasksState, filterState } from '../state/atom.js'
+import { tasksState, filterState, loggedinUser } from '../state/atom.js'
 import { removeTask } from '../state/menu.js'
 
 import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service'
@@ -19,6 +19,7 @@ export function TaskIndex() {
   // const tasks = useSelector((storeState) => storeState.taskModule.tasks)
   const [tasks, setTasks] = useRecoilState(tasksState)
   const [filter, setFilter] = useRecoilState(filterState)
+  const [user, setUser] = useRecoilState(loggedinUser)
 
   // modal
   const modalRef = useRef()
@@ -36,7 +37,7 @@ export function TaskIndex() {
   useEffect(() => {}, [])
   const loadTasks = async () => {
     setFilter(filterBy)
-    console.log(filterBy)
+
     const filteredTasks = await taskService.query(filterBy)
     setTasks(filteredTasks)
   }

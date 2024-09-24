@@ -1,6 +1,10 @@
 import { useState, useRef, useEffect } from 'react'
+import { useRecoilState } from 'recoil'
+
+import { loggedinUser } from '../state/atom.js'
 import { taskService } from '../services/task/task.service.js'
-import { saveTask } from '../store/actions/task.actions.js'
+import { userService } from '../services/user/user.service.js'
+import { saveTask } from '../state/menu.js'
 
 import { Button } from '@mui/material'
 import { IoMdCloseCircle } from 'react-icons/io'
@@ -15,6 +19,7 @@ export function TaskEdit({
   taskToEdit,
   loadTasks,
 }) {
+  const [user, setUser] = useRecoilState(loggedinUser)
   const [editTask, setEditTask] = useState({
     ...taskService.getEmptyTask(),
     id: 'create',
@@ -76,8 +81,10 @@ export function TaskEdit({
     if (editTask.id === 'create') delete editTask.id
 
     try {
-      await saveTask(editTask)
+      const saved = await saveTask(editTask)
       closeEditModal()
+      console.log(saved)
+      setUser(userService.getLoggedinUser())
       loadTasks()
     } catch (err) {
       console.log(err)

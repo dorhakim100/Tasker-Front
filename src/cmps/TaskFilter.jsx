@@ -60,8 +60,8 @@ export function TaskFilter({ filterBy, setFilterBy }) {
   function handleCheckbox(ev) {
     const { status } = filterToEdit
 
-    if (status) {
-      setFilterToEdit({ ...filterToEdit, status: null })
+    if (status === 'All') {
+      setFilterToEdit({ ...filterToEdit, status: 'Pending' })
     } else {
       setFilterToEdit({ ...filterToEdit, status: 'All' })
     }
@@ -136,7 +136,7 @@ export function TaskFilter({ filterBy, setFilterBy }) {
         <ThemeProvider theme={darkTheme}>
           <label htmlFor='done'>Completed</label>
           <Checkbox
-            checked={filterToEdit.status === 'All'}
+            checked={filterToEdit.status === 'All' ? true : false}
             onClick={handleCheckbox}
             id='done'
           />

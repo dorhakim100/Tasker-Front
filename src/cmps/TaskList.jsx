@@ -1,3 +1,7 @@
+import { useRecoilState, useRecoilValue } from 'recoil'
+
+import { loggedinUser } from '../state/atom.js'
+
 import { userService } from '../services/user/user.service.js'
 import { TaskPreview } from './TaskPreview.jsx'
 
@@ -8,8 +12,9 @@ import { RxDotsHorizontal } from 'react-icons/rx'
 
 export function TaskList({ tasks, onRemoveTask, onUpdateTask, setTasks }) {
   // console.log(tasks)
+  const [user, setUser] = useRecoilState(loggedinUser)
   function shouldShowActionBtns(task) {
-    const user = userService.getLoggedinUser()
+    // const user = userService.getLoggedinUser()
 
     if (!user) return false
     if (user.isAdmin) return true
@@ -23,11 +28,14 @@ export function TaskList({ tasks, onRemoveTask, onUpdateTask, setTasks }) {
 
     if (source.index !== destination.index) {
       const reorderedTasks = Array.from(tasks)
+      if (user.tasksIds.length !== reorderedTasks.length) return
       const [removed] = reorderedTasks.splice(source.index, 1)
       reorderedTasks.splice(destination.index, 0, removed)
-      console.log(reorderedTasks)
       // Update your state here to reflect the new order
       setTasks(reorderedTasks)
+      const reorderedIds = reorderedTasks.map((task) => task.id)
+
+      userService.update({ ...user, tasksIds: reorderedIds })
     }
   }
 
