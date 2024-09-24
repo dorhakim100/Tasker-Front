@@ -33,10 +33,27 @@
       z-index: 100;
     }
   
-    form {
-      display: flex;
-      flex-direction: column;
+    .modal-form-container {
+      // display: flex;
+      // flex-direction: column;
+      display: grid;
+      grid-template-columns: repeat(2,1fr);
+
     }
+
+    .title-container, .description-container{
+      grid-column: 1/-1;
+    }
+    .priority-container{
+      grid-column: 1/2;
+      grid-row: 3/4;
+    }
+    .date-container{
+      grid-column: 2/3;
+
+    }
+
+
   
     // Title Container Styling
     .title-container,
@@ -101,6 +118,46 @@
             background-color: $blue-primary;
             color: $text-light;
         }
+    }
+
+    .tags-container{
+      grid-column: 1/-1;
+      display: flex;
+      gap: 0.5em;
+      align-items: center;
+      justify-items: center;
+      overflow-x: auto;
+      max-width: 300px;
+      height: 150px;
+      border-radius: 5px;
+      background-color: $text-dark;
+      padding: 0px 5px 0px 5px;
+      .tag-container{
+        color: $text-dark;
+        input{
+          display: none;
+        }
+        label{
+          padding: 5px;
+          background-color: $white-card-background;
+          border-radius: 5px;
+          box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+          cursor: pointer;
+          &:hover{
+            background-color: $gray-background;
+
+          }
+        }
+        &:has(input:checked)>label{
+          background-color: $blue-primary;
+          color: $text-light;
+        }
+        display: flex;
+        align-items: center;
+        justify-items: center;
+        // min-width: 150px;
+      }
+      
     }
   
     // Button Styling (optional for future submit buttons)

@@ -33,6 +33,18 @@
 
         }
     }
+
+    .tags-container{
+        margin: 0.5em;
+        display: flex;
+        flex-wrap: wrap;
+        span{
+            border-radius: 5px;
+            padding: 5px;
+            background-color: $blue-primary;
+            margin: 0.5em;
+        }
+    }
     .priority-slider {
         width: 100%;
         text-align: center;
@@ -89,8 +101,11 @@
 }
 
 .task-details.completed{
-    color: $green-secondary;
+    // color: $green-secondary;
+    background: linear-gradient(0deg, $black-card-background 70%, $green-secondary 100%);
+    
 }
 .task-details.priority{
-    color: $red;
+    background: linear-gradient(0deg, $black-card-background 70%, $red 100%);
+    // color: $red;
 }

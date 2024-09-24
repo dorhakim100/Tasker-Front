@@ -8,6 +8,7 @@ import { saveTask } from '../state/menu.js'
 
 import { Button } from '@mui/material'
 import { IoMdCloseCircle } from 'react-icons/io'
+import { makeId } from '../services/util.service.js'
 
 export function TaskEdit({
   modalRef,
@@ -25,6 +26,39 @@ export function TaskEdit({
     id: 'create',
   })
 
+  const taskTags = [
+    'AI Model Training',
+    'Agile Retrospective',
+    'API Development',
+    'API Testing',
+    'Backend Development',
+    'Bug Fixing',
+    'Cloud Migration',
+    'Code Review',
+    'Continuous Integration',
+    'Cross-team Collaboration',
+    'Customer Feedback',
+    'Data Analysis',
+    'Database Optimization',
+    'DevOps Deployment',
+    'Documentation',
+    'Feature Implementation',
+    'Frontend Integration',
+    'Infrastructure Setup',
+    'Machine Learning Integration',
+    'Monitoring & Alerts',
+    'Performance Tuning',
+    'Prototyping',
+    'Scalability Assessment',
+    'Security Audit',
+    'Sprint Planning',
+    'System Architecture',
+    'Tech Support',
+    'Testing Automation',
+    'UI/UX Design',
+    'Version Control',
+  ]
+
   useEffect(() => {
     // setEditTask({ ...task })
     if (taskToEdit) {
@@ -40,7 +74,7 @@ export function TaskEdit({
   function handleChange({ target }) {
     const field = target.name
     let value = target.value
-
+    const tag = target.id
     switch (field) {
       case 'title':
         setEditTask({ ...editTask, title: value })
@@ -69,6 +103,19 @@ export function TaskEdit({
         setEditTask({ ...editTask, status: value })
 
         break
+      case 'tags':
+        const tags = [...editTask.tags]
+
+        if (tags.includes(tag)) {
+          const idx = tags.findIndex((tagToRemove) => tagToRemove === tag)
+
+          tags.splice(idx, 1)
+          setEditTask({ ...editTask, tags })
+          return
+        }
+        tags.push(tag)
+        setEditTask({ ...editTask, tags })
+        break
 
       default:
         break
@@ -83,7 +130,7 @@ export function TaskEdit({
     try {
       const saved = await saveTask(editTask)
       closeEditModal()
-      console.log(saved)
+
       setUser(userService.getLoggedinUser())
       loadTasks()
     } catch (err) {
@@ -110,7 +157,7 @@ export function TaskEdit({
         <IoMdCloseCircle />
       </div>
 
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className='modal-form-container'>
         <div className='title-container'>
           <label htmlFor='title'>Title</label>
           <input
@@ -167,6 +214,22 @@ export function TaskEdit({
             onChange={handleChange}
             checked={editTask.status === 'Completed' ? true : false}
           />
+        </div>
+        <div className='tags-container'>
+          {taskTags.map((tag) => {
+            return (
+              <div className='tag-container' key={`${tag}${makeId}`}>
+                <input
+                  type='checkbox'
+                  name='tags'
+                  id={tag}
+                  checked={editTask.tags.includes(tag)}
+                  onChange={handleChange}
+                />
+                <label htmlFor={tag}>{tag}</label>
+              </div>
+            )
+          })}
         </div>
         <Button variant='contained' type='submit'>
           {(!taskToEdit && 'Add Task') || 'Save Task'}

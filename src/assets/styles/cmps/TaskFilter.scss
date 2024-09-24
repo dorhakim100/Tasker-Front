@@ -2,7 +2,7 @@
   display: grid;
   // grid-template-columns: 1fr 5em 5em auto;
   grid-template-columns: repeat(5,auto);
-  grid-template-rows: repeat(2,1fr);
+  // grid-template-rows: repeat(2,1fr);
   align-items: center;
   justify-items: center;
   gap: 0 0.5em;

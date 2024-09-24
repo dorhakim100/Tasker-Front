@@ -61,10 +61,11 @@ export function TaskDetails() {
             <p>{task.description}</p>
           </div>
           <PriorityRange task={task} />
-
-          {task.tags.map((tag) => {
-            return <span key={`${tag}${makeId()}`}>{tag}</span>
-          })}
+          <div className='tags-container'>
+            {task.tags.map((tag) => {
+              return <span key={`${tag}${makeId()}`}>{tag}</span>
+            })}
+          </div>
         </div>
       )}
     </section>
