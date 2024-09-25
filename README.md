@@ -4,7 +4,7 @@ Welcome to **Tasker**! This app is a task management system that allows users to
 
 ## 🚀 Features
 
-- **User Authentication**: Register and login to manage your tasks.
+- **User Authentication**: Register and login to manage your tasks. (In order to create edit or delete tasks you have to signup/login)
 - **CRUD Operations**: Create, Read, Update, and Delete tasks seamlessly.
 - **Task Filtering**: Easily filter tasks based on various criteria.
 - **Drag & Drop**: Organize tasks effortlessly using drag-and-drop functionality.
