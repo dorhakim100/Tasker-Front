@@ -4,6 +4,7 @@ import { Chart, ArcElement, Tooltip, Legend } from 'chart.js'
 Chart.register(ArcElement, Tooltip, Legend)
 
 export function Percentage({ percentages }) {
+  percentages = Math.floor(percentages)
   const data = {
     labels: ['Completed', 'Pending'],
     datasets: [

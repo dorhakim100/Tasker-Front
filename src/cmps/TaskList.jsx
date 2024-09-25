@@ -11,7 +11,6 @@ import { Button, ButtonGroup } from '@mui/material'
 import { RxDotsHorizontal } from 'react-icons/rx'
 
 export function TaskList({ tasks, onRemoveTask, onUpdateTask, setTasks }) {
-  // console.log(tasks)
   const [user, setUser] = useRecoilState(loggedinUser)
 
   function shouldShowActionBtns(task) {
@@ -29,8 +28,6 @@ export function TaskList({ tasks, onRemoveTask, onUpdateTask, setTasks }) {
 
     if (source.index !== destination.index) {
       const reorderedTasks = Array.from(tasks)
-      console.log(user)
-      console.log(reorderedTasks)
       const [removed] = reorderedTasks.splice(source.index, 1)
       reorderedTasks.splice(destination.index, 0, removed)
       // Update your state here to reflect the new order
@@ -44,7 +41,7 @@ export function TaskList({ tasks, onRemoveTask, onUpdateTask, setTasks }) {
           ...user,
           tasksIds: reorderedIds,
         })
-        console.log(updatedUser)
+
         // setUser(updatedUser)
       }
     }

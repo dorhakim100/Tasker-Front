@@ -20,7 +20,7 @@ export function TaskIndex() {
   const [tasks, setTasks] = useRecoilState(tasksState)
   const [filter, setFilter] = useRecoilState(filterState)
   const [user, setUser] = useRecoilState(loggedinUser || { tasksIds: [] })
-  console.log(user)
+
   // modal
   const modalRef = useRef()
   const [isDrag, setIsDrag] = useState(false)
@@ -32,7 +32,6 @@ export function TaskIndex() {
   useEffect(() => {
     // loadTasks(filterBy)
     loadTasks()
-    console.log(tasks)
   }, [filterBy, user])
 
   useEffect(() => {}, [])
@@ -48,7 +47,7 @@ export function TaskIndex() {
       await removeTask(taskId)
       showSuccessMsg('Task removed')
       const updatedUser = await userService.getById(user.id)
-      console.log(updatedUser)
+
       userService.saveLoggedinUser(updatedUser)
       setUser(updatedUser)
       loadTasks(filterBy)

@@ -5,6 +5,7 @@ import { userService } from '../services/user/user.service.js'
 import { login } from '../state/menu.js'
 import { loggedinUser } from '../state/atom.js'
 import { useRecoilState } from 'recoil'
+import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service.js'
 
 import { Button } from '@mui/material'
 
@@ -29,15 +30,16 @@ export function Login() {
   }
 
   async function onLogin(ev = null) {
-    console.log('works')
     if (ev) ev.preventDefault()
     if (!credentials.username) return
     try {
       const loggedinUser = await login(credentials)
       setUser(loggedinUser)
       navigate('/')
+      showSuccessMsg(`Welcome`)
     } catch (err) {
       console.log(err)
+      showErrorMsg(`Can't login`)
     }
   }
 

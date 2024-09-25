@@ -9,6 +9,7 @@ import { saveTask } from '../state/menu.js'
 import { Button } from '@mui/material'
 import { IoMdCloseCircle } from 'react-icons/io'
 import { makeId } from '../services/util.service.js'
+import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service.js'
 
 export function TaskEdit({
   modalRef,
@@ -124,8 +125,11 @@ export function TaskEdit({
 
   async function handleSubmit(ev) {
     ev.preventDefault()
-
-    if (editTask.id === 'create') delete editTask.id
+    let isCreate
+    if (editTask.id === 'create') {
+      delete editTask.id
+      isCreate = true
+    }
 
     try {
       const saved = await saveTask(editTask)
@@ -133,9 +137,19 @@ export function TaskEdit({
       const updatedUser = await userService.getById(user.id)
       setUser(updatedUser)
       userService.saveLoggedinUser(updatedUser)
+      if (isCreate) {
+        showSuccessMsg(`Task added`)
+      } else {
+        showSuccessMsg(`Task edited`)
+      }
       loadTasks()
     } catch (err) {
       console.log(err)
+      if (isCreate) {
+        showErrorMsg(`Can't add task`)
+      } else {
+        showErrorMsg(`Can't edit task`)
+      }
     }
   }
 

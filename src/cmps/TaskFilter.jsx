@@ -46,7 +46,6 @@ export function TaskFilter({ filterBy, setFilterBy }) {
 
   function clearFilter() {
     setFilterToEdit(taskService.getDefaultFilter())
-    console.log(filterBy)
   }
 
   function clearSort() {

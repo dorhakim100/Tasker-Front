@@ -15,7 +15,6 @@ export function UserStats() {
 
   async function getPercentage() {
     const completedTasks = tasks.filter((task) => task.status === 'Completed')
-    console.log(completedTasks)
     const percentagesToSet = (completedTasks.length / tasks.length) * 100
     setPercentages(percentagesToSet)
   }
