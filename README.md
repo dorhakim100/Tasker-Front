@@ -49,7 +49,7 @@ Tasker is built with a modular approach, with services to keep the codebase clea
 
 ## 🖼️ Screenshots
 
-![Tasker Screenshot](./assets/screenshot.png)
+![Tasker Screenshot](public/img/screenshot.png)
 
 ## 🤝 Contributing
 
