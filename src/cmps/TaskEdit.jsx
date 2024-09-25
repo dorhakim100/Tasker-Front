@@ -130,8 +130,9 @@ export function TaskEdit({
     try {
       const saved = await saveTask(editTask)
       closeEditModal()
-
-      setUser(userService.getLoggedinUser())
+      const updatedUser = await userService.getById(user.id)
+      setUser(updatedUser)
+      userService.saveLoggedinUser(updatedUser)
       loadTasks()
     } catch (err) {
       console.log(err)

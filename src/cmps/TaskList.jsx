@@ -13,6 +13,7 @@ import { RxDotsHorizontal } from 'react-icons/rx'
 export function TaskList({ tasks, onRemoveTask, onUpdateTask, setTasks }) {
   // console.log(tasks)
   const [user, setUser] = useRecoilState(loggedinUser)
+
   function shouldShowActionBtns(task) {
     // const user = userService.getLoggedinUser()
 
@@ -21,21 +22,31 @@ export function TaskList({ tasks, onRemoveTask, onUpdateTask, setTasks }) {
     return task.owner?._id === user._id
   }
 
-  const onDragEnd = (result) => {
+  const onDragEnd = async (result) => {
     const { source, destination } = result
 
     if (!destination) return // If dropped outside the list, ignore
 
     if (source.index !== destination.index) {
       const reorderedTasks = Array.from(tasks)
-      if (user.tasksIds.length !== reorderedTasks.length) return
+      console.log(user)
+      console.log(reorderedTasks)
       const [removed] = reorderedTasks.splice(source.index, 1)
       reorderedTasks.splice(destination.index, 0, removed)
       // Update your state here to reflect the new order
       setTasks(reorderedTasks)
       const reorderedIds = reorderedTasks.map((task) => task.id)
 
-      userService.update({ ...user, tasksIds: reorderedIds })
+      const { tasksIds } = user
+
+      if (tasksIds.length === reorderedTasks.length) {
+        const updatedUser = await userService.update({
+          ...user,
+          tasksIds: reorderedIds,
+        })
+        console.log(updatedUser)
+        // setUser(updatedUser)
+      }
     }
   }
 

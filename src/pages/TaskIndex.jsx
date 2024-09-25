@@ -19,8 +19,8 @@ export function TaskIndex() {
   // const tasks = useSelector((storeState) => storeState.taskModule.tasks)
   const [tasks, setTasks] = useRecoilState(tasksState)
   const [filter, setFilter] = useRecoilState(filterState)
-  const [user, setUser] = useRecoilState(loggedinUser)
-
+  const [user, setUser] = useRecoilState(loggedinUser || { tasksIds: [] })
+  console.log(user)
   // modal
   const modalRef = useRef()
   const [isDrag, setIsDrag] = useState(false)
@@ -32,7 +32,8 @@ export function TaskIndex() {
   useEffect(() => {
     // loadTasks(filterBy)
     loadTasks()
-  }, [filterBy])
+    console.log(tasks)
+  }, [filterBy, user])
 
   useEffect(() => {}, [])
   const loadTasks = async () => {
@@ -46,6 +47,10 @@ export function TaskIndex() {
     try {
       await removeTask(taskId)
       showSuccessMsg('Task removed')
+      const updatedUser = await userService.getById(user.id)
+      console.log(updatedUser)
+      userService.saveLoggedinUser(updatedUser)
+      setUser(updatedUser)
       loadTasks(filterBy)
     } catch (err) {
       showErrorMsg('Cannot remove task')

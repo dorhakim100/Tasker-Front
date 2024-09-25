@@ -1,4 +1,4 @@
-import { storageService } from '../async-storage.service'
+import { httpService } from '../http.service'
 
 const STORAGE_KEY_LOGGEDIN_USER = 'loggedinUser'
 
@@ -15,39 +15,45 @@ export const userService = {
   getEmptyUser,
 }
 
-async function getUsers() {
-  const users = await storageService.query('user')
-  return users.map((user) => {
-    delete user.password
-    return user
-  })
+function getUsers() {
+  return httpService.get(`user`)
 }
 
 async function getById(userId) {
-  return await storageService.get('user', userId)
-}
-
-function remove(userId) {
-  return storageService.remove('user', userId)
-}
-
-async function update({ id, tasksIds }) {
-  const user = await storageService.get('user', id)
-  user.tasksIds = tasksIds
-  await storageService.put('user', user)
-
-  // When admin updates other user's details, do not update loggedinUser
-  const loggedinUser = getLoggedinUser()
-  if (loggedinUser._id === user._id) saveLoggedinUser(user)
-
+  const user = await httpService.get(`user/${userId}`)
   return user
 }
 
-async function login(userCred) {
-  const users = await storageService.query('user')
-  const user = users.find((user) => user.username === userCred.username)
+function remove(userId) {
+  return httpService.delete(`user/${userId}`)
+}
 
-  if (user) return saveLoggedinUser(user)
+async function update(userToUpdate) {
+  const { id } = userToUpdate
+
+  try {
+    console.log(userToUpdate)
+    const savedUser = await httpService.put(`user/${id}`, userToUpdate)
+    console.log(savedUser)
+    // When admin updates other user's details, do not update loggedinUser
+    // const loggedinUser = getLoggedinUser() // Might not work because its defined in the main service???
+    // if (loggedinUser.id === savedUser.id)
+    saveLoggedinUser(savedUser)
+
+    return savedUser
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+async function login(userCred) {
+  try {
+    const user = await httpService.post('auth/login', userCred)
+
+    if (user) return saveLoggedinUser(user)
+  } catch (err) {
+    console.log(err)
+  }
 }
 
 async function signup(userCred) {
@@ -56,12 +62,13 @@ async function signup(userCred) {
       'https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359553_1280.png'
   userCred.tasksIds = []
 
-  const user = await storageService.post('user', userCred)
+  const user = await httpService.post('auth/signup', userCred)
   return saveLoggedinUser(user)
 }
 
 async function logout() {
   sessionStorage.removeItem(STORAGE_KEY_LOGGEDIN_USER)
+  return await httpService.post('auth/logout')
 }
 
 function getLoggedinUser() {
@@ -89,20 +96,4 @@ function getEmptyUser() {
     imgUrl:
       'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
   }
-}
-
-// To quickly create an admin user, uncomment the next line
-// _createAdmin()
-async function _createAdmin() {
-  const user = {
-    username: 'admin',
-    password: 'admin',
-    fullname: 'Mustafa Adminsky',
-    imgUrl:
-      'https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359553_1280.png',
-    score: 10000,
-  }
-
-  const newUser = await storageService.post('user', userCred)
-  console.log('newUser: ', newUser)
 }
